@@ -16,14 +16,14 @@ public class PersonaDao {
 	private Transaction tx; // Mantiene la referencia a la transacción
 
 	// Inicia una sesión y una transacción a la base de datos
-	private void openSession() {
+	private void startOperation() {
 		this.session = HibernateUtil.getSessionFactory().openSession();
 		tx = session.beginTransaction();
 	}
 
 	public void save(Persona persona) {
 		try {
-			openSession();
+			startOperation();
 			session.save(persona);
 			tx.commit();
 		} catch (HibernateException ex) {
@@ -36,7 +36,7 @@ public class PersonaDao {
 
 	public void update(Persona persona) {
 		try {
-			openSession();
+			startOperation();
 			session.update(persona);
 			tx.commit();
 		} catch (HibernateException ex) {
@@ -49,7 +49,7 @@ public class PersonaDao {
 
 	public void delete(Persona persona) {
 		try {
-			openSession();
+			startOperation();
 			session.delete(persona);
 			tx.commit();
 		} catch (HibernateException ex) {
@@ -63,7 +63,7 @@ public class PersonaDao {
 	public Persona findById(int id) {
 		Persona persona = null;
 		try {
-			openSession();
+			startOperation();
 			persona = (Persona) session.get(Persona.class, id);
 			tx.commit();
 		} catch (HibernateException ex) {
@@ -79,7 +79,7 @@ public class PersonaDao {
 	public List<Persona> findAll() {
 		List<Persona> list = null;
 		try {
-			openSession();
+			startOperation();
 			list = session.createQuery("from Persona", Persona.class).list();
 			tx.commit();
 		} catch (HibernateException ex) {
